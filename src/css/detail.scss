@@ -1,0 +1,18 @@
+@charset "utf-8";
+@import "index";
+.container{
+  position: relative;
+  width: 500px;
+  height: 500px;
+  margin: 0 auto;
+  background-color: blue;
+  color: #fff;
+  span{
+    position: absolute;
+    letter-spacing: 20px;
+    margin-right: -20px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
+}
