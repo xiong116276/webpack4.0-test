@@ -1,5 +1,7 @@
+const host = "192.168.41.167";
+
 var website ={
-  publicPath:"http://192.168.41.107:8888/"
+  publicPath:"http://"+host+":8888/"
 };
 const webpack = require('webpack');
 const path = require("path");
@@ -48,8 +50,6 @@ module.exports = {
       template : './src/index.html', //html模板路径
       //inject : 'head',  //js文件在head中，若为body则在body中
       inject : 'body',
-      // title : 'this is first',
-      author : 'xk',
       //excludeChunks: ['main'],//打包时不打包main.js文件
       chunks : ['jquery','main'], //打包时只打包main.js文件，见entry，注意使用chunks时模板index.html文件里面不允许有script标签，即使注释掉也会报错
       date : new Date(),
@@ -62,8 +62,6 @@ module.exports = {
       template : './src/detail.html', //html模板路径
       //inject : 'head',  //js文件在head中，若为body则在body中
       inject : 'body',
-      // title : 'this is detail',
-      author : 'xk',
       //excludeChunks: ['main'],//打包时不打包main.js文件
       chunks : ['jquery','main2'], //打包时只打包main2.js文件，见entry，注意使用chunks时模板index.html文件里面不允许有script标签，即使注释掉也会报错
       date : new Date(),
@@ -80,7 +78,6 @@ module.exports = {
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename: "css/[name].css",
-      chunkFilename:"css/base.css"
     }),
 
     new webpack.ProvidePlugin({
@@ -100,10 +97,35 @@ module.exports = {
       //   })
       // },
       {
-        test: /\.css$/,
+        test:/\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
-          "css-loader"
+          "css-loader",
+          "postcss-loader"
+        ]
+      },
+      //引入 scss loader
+      {
+        test: /\.scss$/,
+        use: [{
+          loader: "css-loader" // translates CSS into CommonJS
+        }, {
+          loader: "sass-loader" // compiles Sass to CSS
+        }]
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          {loader:MiniCssExtractPlugin.loader},
+          {loader: 'css-loader',options: { importLoaders: 1,sourceMap: true }},
+          {loader: 'sass-loader',options: {
+              sourceMap: true
+            }},
+          {loader: 'postcss-loader',
+            options: {
+              config: { path: path.resolve(__dirname, '../postcss.config.js')},
+              sourceMap: true
+            }}
         ]
       },
       // 字体图标的配置
@@ -175,7 +197,7 @@ module.exports = {
     //设置基本目录结构
     contentBase:path.resolve(__dirname,'../dist'),
     //服务器的IP地址，科室使用IP也可以使用localhost
-    host:'192.168.41.107',
+    host:host,
     //服务端压缩是否开启
     compress:true,
     //配置服务端口号
