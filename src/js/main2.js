@@ -138,6 +138,77 @@ ctx.fillRect(45,45,60,60);   // Draw a rectangle with restored settings
 ctx.restore();               // Restore original state
 ctx.fillRect(60,60,30,30);
 
+//数组排序
+var arr = [12,-3,2,43,18,4,56,23,9];
+// 1、arr.sort(function(a,b){return a-b}));
+// console.log(arr.sort(function(a,b){return a-b}));
+//2、冒泡排序
+// for(var i = 0,len = arr.length;i < len;i++){
+//   for(var j = 0;j < len-1;j++){
+//     if(arr[j] > arr[j+1]){
+//       var m = arr[j+1];
+//       arr[j+1] = arr[j];
+//       arr[j] = m;
+//     }
+//   }
+// }
+// console.log(arr);
+//3、快速排序
+//递归算法，取中间值，与左右两边比较大的放右边，小的放左边，
+function quickSort(arr){
+  if(arr.length <=1){return arr;}
+  var index = Math.floor(arr.length/2);
+  var temp = arr[index];
+  var l = [];
+  var r = [];
+
+  for(var i =0;i<arr.length;i++){
+    if(arr[i]<temp){
+      l.push(arr[i])
+    }else if(arr[i]>temp){
+      r.push(arr[i])
+    }
+  }
+
+ return quickSort(l).concat(temp,quickSort(r));
+};
+console.log(quickSort(arr));
+
+//4、插入排序
+function insertSort(arr) {
+  //从第0个开始以为有序序列，从第一个开始与前面的比较，以此来插入相应的位置。
+  for(var i = 1,len = arr.length;i < len;i++){
+    //取出无序序列中需要插入的第i个元素的值
+    var temp = arr[i];
+    //拿取出的值与前面的值比较
+    for (var j = i -1;j>=0;j--){
+      if(temp < arr[j]){
+        var m = temp;
+        arr[j+1] = arr[j]
+        arr[j]   = temp;
+      }
+    }
+  }
+  return arr;
+}
+console.log(insertSort(arr));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
